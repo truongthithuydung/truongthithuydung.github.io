@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.143.0">
+    <meta name="description" content="">
+<meta name="author" content="journeyoftheaverageguy@gmail.com">
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Data Validation and ETL (2) :: ETL &amp; Data Lake Immersion</title>
+
+    
+    <link href="/css/nucleus.css?1739967814" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1739967814" rel="stylesheet">
+    <link href="/css/hybrid.css?1739967814" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1739967814" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1739967814" rel="stylesheet">
+    <link href="/css/auto-complete.css?1739967814" rel="stylesheet">
+    <link href="/css/atom-one-dark-reasonable.css?1739967814" rel="stylesheet">
+    <link href="/css/theme.css?1739967814" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1739967814" rel="stylesheet">
+    
+    <link href="/css/theme-workshop.css?1739967814" rel="stylesheet">
+    
+    
+
+    <script src="/js/jquery-3.3.1.min.js?1739967814"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/4-transforming-glue/2-etl-2/">
+    <nav id="sidebar" class="showVisitedLinks">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a id="logo" href="/">
+
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="30%"><defs><style>.cls-1{fill:#fff;}.cls-2{fill:#f90;fill-rule:evenodd;}</style></defs><title>AWS-Logo_White-Color</title><path class="cls-1" d="M14.09,10.85a4.7,4.7,0,0,0,.19,1.48,7.73,7.73,0,0,0,.54,1.19.77.77,0,0,1,.12.38.64.64,0,0,1-.32.49l-1,.7a.83.83,0,0,1-.44.15.69.69,0,0,1-.49-.23,3.8,3.8,0,0,1-.6-.77q-.25-.42-.51-1a6.14,6.14,0,0,1-4.89,2.3,4.54,4.54,0,0,1-3.32-1.19,4.27,4.27,0,0,1-1.22-3.2A4.28,4.28,0,0,1,3.61,7.75,6.06,6.06,0,0,1,7.69,6.46a12.47,12.47,0,0,1,1.76.13q.92.13,1.91.36V5.73a3.65,3.65,0,0,0-.79-2.66A3.81,3.81,0,0,0,7.86,2.3a7.71,7.71,0,0,0-1.79.22,12.78,12.78,0,0,0-1.79.57,4.55,4.55,0,0,1-.58.22l-.26,0q-.35,0-.35-.52V2a1.09,1.09,0,0,1,.12-.58,1.2,1.2,0,0,1,.47-.35A10.88,10.88,0,0,1,5.77.32,10.19,10.19,0,0,1,8.36,0a6,6,0,0,1,4.35,1.35,5.49,5.49,0,0,1,1.38,4.09ZM7.34,13.38a5.36,5.36,0,0,0,1.72-.31A3.63,3.63,0,0,0,10.63,12,2.62,2.62,0,0,0,11.19,11a5.63,5.63,0,0,0,.16-1.44v-.7a14.35,14.35,0,0,0-1.53-.28,12.37,12.37,0,0,0-1.56-.1,3.84,3.84,0,0,0-2.47.67A2.34,2.34,0,0,0,5,11a2.35,2.35,0,0,0,.61,1.76A2.4,2.4,0,0,0,7.34,13.38Zm13.35,1.8a1,1,0,0,1-.64-.16,1.3,1.3,0,0,1-.35-.65L15.81,1.51a3,3,0,0,1-.15-.67.36.36,0,0,1,.41-.41H17.7a1,1,0,0,1,.65.16,1.4,1.4,0,0,1,.33.65l2.79,11,2.59-11A1.17,1.17,0,0,1,24.39.6a1.1,1.1,0,0,1,.67-.16H26.4a1.1,1.1,0,0,1,.67.16,1.17,1.17,0,0,1,.32.65L30,12.39,32.88,1.25A1.39,1.39,0,0,1,33.22.6a1,1,0,0,1,.65-.16h1.54a.36.36,0,0,1,.41.41,1.36,1.36,0,0,1,0,.26,3.64,3.64,0,0,1-.12.41l-4,12.86a1.3,1.3,0,0,1-.35.65,1,1,0,0,1-.64.16H29.25a1,1,0,0,1-.67-.17,1.26,1.26,0,0,1-.32-.67L25.67,3.64,23.11,14.34a1.26,1.26,0,0,1-.32.67,1,1,0,0,1-.67.17Zm21.36.44a11.28,11.28,0,0,1-2.56-.29,7.44,7.44,0,0,1-1.92-.67,1,1,0,0,1-.61-.93v-.84q0-.52.38-.52a.9.9,0,0,1,.31.06l.42.17a8.77,8.77,0,0,0,1.83.58,9.78,9.78,0,0,0,2,.2,4.48,4.48,0,0,0,2.43-.55,1.76,1.76,0,0,0,.86-1.57,1.61,1.61,0,0,0-.45-1.16A4.29,4.29,0,0,0,43,9.22l-2.41-.76A5.15,5.15,0,0,1,38,6.78a3.94,3.94,0,0,1-.83-2.41,3.7,3.7,0,0,1,.45-1.85,4.47,4.47,0,0,1,1.19-1.37A5.27,5.27,0,0,1,40.51.29,7.4,7.4,0,0,1,42.6,0a8.87,8.87,0,0,1,1.12.07q.57.07,1.08.19t.95.26a4.27,4.27,0,0,1,.7.29,1.59,1.59,0,0,1,.49.41.94.94,0,0,1,.15.55v.79q0,.52-.38.52a1.76,1.76,0,0,1-.64-.2,7.74,7.74,0,0,0-3.2-.64,4.37,4.37,0,0,0-2.21.47,1.6,1.6,0,0,0-.79,1.48,1.58,1.58,0,0,0,.49,1.18,4.94,4.94,0,0,0,1.83.92L44.55,7a5.08,5.08,0,0,1,2.57,1.6A3.76,3.76,0,0,1,47.9,11a4.21,4.21,0,0,1-.44,1.93,4.4,4.4,0,0,1-1.21,1.47,5.43,5.43,0,0,1-1.85.93A8.25,8.25,0,0,1,42.05,15.62Z"></path><path class="cls-2" d="M45.19,23.81C39.72,27.85,31.78,30,25,30A36.64,36.64,0,0,1,.22,20.57c-.51-.46-.06-1.09.56-.74A49.78,49.78,0,0,0,25.53,26.4,49.23,49.23,0,0,0,44.4,22.53C45.32,22.14,46.1,23.14,45.19,23.81Z"></path><path class="cls-2" d="M47.47,21.21c-.7-.9-4.63-.42-6.39-.21-.53.06-.62-.4-.14-.74,3.13-2.2,8.27-1.57,8.86-.83s-.16,5.89-3.09,8.35c-.45.38-.88.18-.68-.32C46.69,25.8,48.17,22.11,47.47,21.21Z"></path></svg>
+
+</a>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="Search...">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/js/lunr.min.js?1739967814"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1739967814"></script>
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/localhost:1313\/";
+    
+</script>
+<script type="text/javascript" src="/js/search.js?1739967814"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-introduction/" title="Introduction" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/1-introduction/">
+          <b>1. </b>Introduction
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-introduction/1-local-system-setup/" title="Local System Setup" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/1-introduction/1-local-system-setup/">
+          <b>1.1. </b>Local System Setup
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-introduction/2-aws-account-setup/" title="AWS Account and IAM User" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/1-introduction/2-aws-account-setup/">
+          <b>1.2. </b>AWS Account and IAM User
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-clickstream-anomaly-detection-with-flink/" title="Lab: Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/2-clickstream-anomaly-detection-with-flink/">
+          <b>2. </b>Lab: Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-clickstream-anomaly-detection-with-flink/1-prelab-setup/" title="Prelab Setup" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/2-clickstream-anomaly-detection-with-flink/1-prelab-setup/">
+          <b>2.1. </b>Prelab Setup
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-clickstream-anomaly-detection-with-flink/2-real-time-clickstream-anomaly-detection/" title="Lab: Real Time Clickstream Anomaly Detection" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/2-clickstream-anomaly-detection-with-flink/2-real-time-clickstream-anomaly-detection/">
+          <b>2.2. </b>Lab: Real Time Clickstream Anomaly Detection
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-clickstream-anomaly-detection-with-flink/3-streaming-etl-with-aws-glue/" title="Lab: Streaming ETL With Aws Glue" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/2-clickstream-anomaly-detection-with-flink/3-streaming-etl-with-aws-glue/">
+          <b>2.3. </b>Lab: Streaming ETL With Aws Glue
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/3-ingestion-with-dms/" title="Ingestion With DMS: Skip DMS Lab" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/3-ingestion-with-dms/">
+          <b>3. </b>Ingestion With DMS: Skip DMS Lab
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/4-transforming-glue/" title="Transforming data with Glue" class="dd-item 
+        parent
+        
+        
+        ">
+      <a href="/4-transforming-glue/">
+          <b>4. </b>Transforming data with Glue
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/4-transforming-glue/1-etl/" title="Data Validation and ETL (1)" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/4-transforming-glue/1-etl/">
+          <b>4.1 </b>Data Validation and ETL (1)
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/4-transforming-glue/2-etl-2/" title="Data Validation and ETL (2)" class="dd-item 
+        
+        active
+        
+        ">
+      <a href="/4-transforming-glue/2-etl-2/">
+          <b>4.2. </b>Data Validation and ETL (2)
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/5-query-and-visualize/" title="Athena and Quicksight" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/5-query-and-visualize/">
+          <b>5. </b>Athena and Quicksight
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+
+    
+    <section id="prefooter">
+      <hr/>
+      <ul>
+      
+        <li>
+          <a class="padding">
+            <i class="fas fa-language fa-fw"></i>
+          <div class="select-style">
+            <select id="select-language" onchange="location = this.value;">
+          
+          
+          
+              
+              
+                  
+                    
+                    
+                      <option id="en" value="/4-transforming-glue/2-etl-2/" selected>English</option>
+                    
+                  
+              
+                  
+              
+          
+              
+              
+                  
+              
+                  
+                    
+                    
+                      <option id="vi" value="/vi/4-transforming-glue/2-etl-2/">Tiếng Việt</option>
+                    
+                  
+              
+          
+        </select>
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+          <g>
+            <g id="arrow-drop-down">
+              <polygon points="0,63.75 127.5,191.25 255,63.75 		" />
+            </g>
+          </g>
+        </svg>
+        </div>
+        </a>
+        </li>
+      
+      
+      
+        <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Clear History</a></li>
+      
+      </ul>
+    </section>
+    
+    <section id="footer">
+      <left>
+    
+     <b> Workshop</b> <br>
+    <img src="https://hitwebcounter.com/counter/counter.php?page=7830891&style=0038&nbdigits=9&type=page&initCount=0" title="Migrate" Alt="web counter"   border="0" /></a>  <br>
+     <b> <a href="https://cloudjourney.awsstudygroup.com/">Cloud Journey</a></b> <br>
+    <img src="https://hitwebcounter.com/counter/counter.php?page=7830807&style=0038&nbdigits=9&type=page&initCount=0" title="Total CLoud Journey" Alt="web counter"   border="0"   />
+     
+</left>
+<left>
+    <br>
+    <br>
+        <b> Last Updated </b> <br>
+        <i><font color=orange>19-02-2025</font></i>
+    </left>
+    <left>
+        <br>
+        <br>
+            <b> Team </b> <br>
+           
+            <i>
+                <a href="https://www.linkedin.com/in/jotaguy"  style="color:orange">Thùy Dung</a>
+        </i>
+        </left>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='/'>ETL & Data Lake Immersion</a> > <a href='/4-transforming-glue/'>Transforming data with Glue</a> > Data Validation and ETL (2)
+          
+        
+          
+        
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#-part-c-data-etl-exercise">🛠 <strong>PART C: Data ETL Exercise</strong></a></li>
+        <li><a href="#-part-d-create-glue-crawler-for-parquet-files">🛠 <strong>PART D: Create Glue Crawler for Parquet Files</strong></a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              Data Validation and ETL (2)
+            </h1>
+          
+
+        
+
+
+
+	<h3 id="-part-c-data-etl-exercise">🛠 <strong>PART C: Data ETL Exercise</strong></h3>
+<h4 id="steps-for-creating-the-etl-job"><strong>Steps for Creating the ETL Job</strong></h4>
+<p><strong>1. Navigate to ETL Jobs</strong> :In the left navigation pane, click on <strong>ETL jobs</strong>.
+<strong>2. Choose Visual ETL</strong></p>
+<ul>
+<li>Click on <strong>Visual ETL</strong>.</li>
+</ul>
+<p><img src="/4-transforming-glue/1-etl/16.png?width=90pc" alt="16"></p>
+<p><strong>3. Select S3 Data Source</strong></p>
+<ul>
+<li>From the <strong>Sources</strong> list, select <strong>Amazon S3</strong> to add a <strong>Data source - S3 bucket node</strong>.</li>
+</ul>
+<p><img src="/4-transforming-glue/1-etl/17.png?width=90pc" alt="17"></p>
+<p><strong>4. Show Data Source Properties</strong></p>
+<ul>
+<li>Select the <strong>Data source - S3 bucket node</strong> to view the data source properties.</li>
+</ul>
+<p><img src="/4-transforming-glue/1-etl/18.png?width=90pc" alt="18"></p>
+<p><strong>5. Configure Data Source Properties</strong></p>
+<ul>
+<li>In the panel on the right, under <strong>Data source properties - S3</strong>, select <strong>Data Catalog table</strong>.</li>
+<li>Choose the <strong>ticketdata</strong> database from the drop-down.</li>
+<li>For <strong>Table</strong>, select the <strong>sport_team</strong> table.</li>
+</ul>
+<p><img src="/4-transforming-glue/1-etl/19.png?width=90pc" alt="19"></p>
+<p><strong>6. Add Change Schema Transform</strong></p>
+<ul>
+<li>Click on the <strong>+</strong> button and select <strong>Change Schema</strong> from the <strong>Transforms</strong> list to add a <strong>Transform - Change Schema node</strong>.</li>
+</ul>
+<p><img src="/4-transforming-glue/1-etl/20.png?width=90pc" alt="20"></p>
+<p><strong>7. Modify Column Data Type</strong></p>
+<ul>
+<li>Select the <strong>Transform - Change Schema node</strong> to view the properties.</li>
+<li>In the <strong>Transform panel</strong> on the right, change the <strong>data type</strong> of the <strong>id</strong> column to <strong>double</strong> from the dropdown.</li>
+</ul>
+<p><img src="/4-transforming-glue/1-etl/21.png?width=90pc" alt="21"></p>
+<p><strong>8. Add S3 Data Target</strong></p>
+<ul>
+<li>Click on the <strong>+</strong> button again and select <strong>Amazon S3</strong> from the <strong>Targets</strong> list to add a <strong>Data target - S3 bucket node</strong>.</li>
+<li>Select the <strong>Data target - S3 bucket node</strong> to view the properties.</li>
+<li>In the panel on the right:
+<ul>
+<li>Change the <strong>Format</strong> to <strong>Parquet</strong> from the dropdown.</li>
+<li>Under <strong>Compression Type</strong>, select <strong>Uncompressed</strong> from the dropdown.</li>
+</ul>
+</li>
+<li>Under <strong>S3 Target Location</strong>, select <strong>Browse S3</strong>.</li>
+<li>Browse to the <strong>mod-xxx-dmslabs3bucket-xxx</strong> bucket, select the <strong>tickets</strong> item, and press <strong>Choose</strong>.</li>
+<li>In the text box, append <strong>dms_parquet/sport_team/</strong> to the S3 URL. The path should look like:
+<pre tabindex="0"><code>s3://mod-xxx-dmslabs3bucket-xxx/tickets/dms_parquet/sport_team/
+</code></pre></li>
+<li>Don&rsquo;t forget the <strong>/</strong> at the end. The job will automatically create the folder.</li>
+</ul>
+<p><img src="/4-transforming-glue/1-etl/22.png?width=90pc" alt="22"></p>
+<p><strong>9. Configure Job Details</strong></p>
+<ul>
+<li>Select the <strong>Job details</strong> tab at the top.</li>
+<li>Enter <strong>Glue-Lab-SportTeamParquet</strong> as the <strong>Name</strong>.</li>
+<li>For <strong>IAM Role</strong>, select the role named similar to <strong>mod-xxx-GlueLabRole-xxx</strong>.</li>
+<li>Scroll down the page, and under <strong>Job bookmark</strong>, select <strong>Disable</strong> from the dropdown. (You can try out the bookmark functionality later in this lab.)</li>
+</ul>
+<p><img src="/4-transforming-glue/1-etl/23.png?width=90pc" alt="23">
+<img src="/4-transforming-glue/1-etl/24.png?width=90pc" alt="24"></p>
+<p><strong>10. Save the Job</strong>: Press the <strong>Save</strong> button in the top right corner to create the job.
+<strong>11  . Run the Job</strong>: After the job is created successfully, click the <strong>Run</strong> button to start the job.</p>
+<p><strong>15. Monitor the Job</strong></p>
+<ul>
+<li>Select <strong>Jobs</strong> from the left-hand navigation panel to view a list of your jobs.</li>
+<li>Click on <strong>Monitoring</strong> to view the status of running jobs, success/failure rates, and other statistics.</li>
+</ul>
+<p><img src="/4-transforming-glue/1-etl/25.png?width=90pc" alt="25"></p>
+<p><strong>16. Verify Job Completion</strong></p>
+<ul>
+<li>Scroll down to the <strong>Job runs list</strong> to verify that the ETL job has completed successfully. This process should take about 1 minute.</li>
+</ul>
+<p><img src="/4-transforming-glue/1-etl/26.png?width=90pc" alt="26">
+<img src="/4-transforming-glue/1-etl/27.png?width=90pc" alt="27"></p>
+<h4 id="repeat-for-other-tables"><strong>Repeat for Other Tables</strong></h4>
+<p>You need to repeat this process for an additional 4 jobs to transform the <strong>sport_location</strong>, <strong>sporting_event</strong>, <strong>sporting_event_ticket</strong>, and <strong>person</strong> tables. During this process, modify the column data types as required.</p>
+<p>You can either:</p>
+<ul>
+<li>Repeat the process above for each table.</li>
+<li>Clone the first job and update the details for each table.</li>
+</ul>
+<hr>
+<h3 id="-part-d-create-glue-crawler-for-parquet-files">🛠 <strong>PART D: Create Glue Crawler for Parquet Files</strong></h3>
+<p><strong>1. Navigate to Crawlers in Glue</strong></p>
+<ul>
+<li>In the Glue navigation menu, under <strong>Data Catalog</strong>, select <strong>Crawlers</strong>.</li>
+<li>Click <strong>Create crawler</strong>.</li>
+</ul>
+<p><strong>2. Provide Crawler Name</strong></p>
+<ul>
+<li>For the <strong>Crawler name</strong>, type <code>glue-lab-parquet-crawler</code> and click <strong>Next</strong>.</li>
+</ul>
+<p><img src="/4-transforming-glue/1-etl/28.png?width=90pc" alt="28"></p>
+<p><strong>3. Add Data Store</strong></p>
+<ul>
+<li>In the <strong>Add data store</strong> screen:
+<ul>
+<li>For <strong>Choose a data store</strong>, select <strong>S3</strong>.</li>
+<li>For <strong>Location of S3 data</strong>, select <strong>In this account</strong>.</li>
+<li>For <strong>S3 path</strong>, specify the S3 path (Parent Parquet folder) containing the nested Parquet files, e.g.,
+<pre tabindex="0"><code>s3://xxx-dmslabs3bucket-xxx/tickets/dms_parquet/
+</code></pre></li>
+<li>Leave all other parameters as default.</li>
+<li>Click <strong>Add an S3 data source</strong>.</li>
+</ul>
+</li>
+</ul>
+<p><img src="/4-transforming-glue/1-etl/29.png?width=90pc" alt="29"></p>
+<p><strong>4. Choose Data Source and Classifiers</strong></p>
+<ul>
+<li>In the <strong>Choose data sources and classifiers</strong> screen, click <strong>Next</strong>.</li>
+</ul>
+<p><img src="/4-transforming-glue/1-etl/30.png?width=90pc" alt="30"></p>
+<p><strong>5. Configure Security Settings</strong></p>
+<ul>
+<li>On the <strong>Configure security settings</strong> page, select <strong>Choose an existing IAM role</strong>.
+<ul>
+<li>For <strong>IAM role</strong>, select the existing role <strong>xxx-GlueLabRole-xxx</strong>.</li>
+<li>Click <strong>Next</strong>.</li>
+</ul>
+</li>
+</ul>
+<p><img src="/4-transforming-glue/1-etl/31.png?width=90pc" alt="31"></p>
+<p><strong>6. Set Output and Scheduling</strong></p>
+<ul>
+<li>On the <strong>Set output and scheduling</strong> page:
+<ul>
+<li>Under <strong>Target database</strong>, choose the existing database you created earlier, e.g., <code>ticketdata</code>.</li>
+<li>For <strong>Prefix added to tables (optional)</strong>, type <code>parquet_</code>.</li>
+<li>For <strong>Crawler schedule</strong>, select <strong>On Demand</strong>.</li>
+<li>Click <strong>Next</strong>.</li>
+</ul>
+</li>
+</ul>
+<p><img src="/4-transforming-glue/1-etl/32.png?width=90pc" alt="32"></p>
+<p><strong>7. Review and Create Crawler</strong></p>
+<ul>
+<li>Review the summary and click <strong>Create crawler</strong>.</li>
+</ul>
+<p><img src="/4-transforming-glue/1-etl/33.png?width=90pc" alt="33"></p>
+<p><strong>9. Run the Crawler</strong></p>
+<ul>
+<li>After creating the crawler, click <strong>Run Crawler</strong>.</li>
+<li>Once the crawler finishes running, you should see that the tables were added, depending on how many Parquet ETL conversions you set up in the previous section.</li>
+</ul>
+<p><img src="/4-transforming-glue/1-etl/34.png?width=90pc" alt="34"></p>
+<p><strong>10. Verify Tables</strong></p>
+<ul>
+<li>In the left navigation pane, click <strong>Tables</strong>.</li>
+<li>Add the filter <strong>parquet</strong> for <strong>Classification</strong> to return the newly created tables.</li>
+</ul>
+<p>🎉 <strong>Congratulations!</strong> You&rsquo;ve successfully completed the Data Validation and ETL lab.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/4-transforming-glue/1-etl/" title="Data Validation and ETL (1)"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/5-query-and-visualize/" title="Athena and Quicksight" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1739967814"></script>
+    <script src="/js/perfect-scrollbar.min.js?1739967814"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1739967814"></script>
+    <script src="/js/jquery.sticky.js?1739967814"></script>
+    <script src="/js/featherlight.min.js?1739967814"></script>
+    <script src="/js/highlight.pack.js?1739967814"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom-3.6.0.js?1739967814"></script>
+    <script src="/js/learn.js?1739967814"></script>
+    <script src="/js/hugo-learn.js?1739967814"></script>
+
+    <link href="/mermaid/mermaid.css?1739967814" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1739967814"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-158079754-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  </body>
+</html>

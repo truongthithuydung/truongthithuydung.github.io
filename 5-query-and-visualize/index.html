@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.143.0">
+    <meta name="description" content="">
+<meta name="author" content="journeyoftheaverageguy@gmail.com">
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Athena and Quicksight :: ETL &amp; Data Lake Immersion</title>
+
+    
+    <link href="/css/nucleus.css?1739967814" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1739967814" rel="stylesheet">
+    <link href="/css/hybrid.css?1739967814" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1739967814" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1739967814" rel="stylesheet">
+    <link href="/css/auto-complete.css?1739967814" rel="stylesheet">
+    <link href="/css/atom-one-dark-reasonable.css?1739967814" rel="stylesheet">
+    <link href="/css/theme.css?1739967814" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1739967814" rel="stylesheet">
+    
+    <link href="/css/theme-workshop.css?1739967814" rel="stylesheet">
+    
+    
+
+    <script src="/js/jquery-3.3.1.min.js?1739967814"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/5-query-and-visualize/">
+    <nav id="sidebar" class="showVisitedLinks">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a id="logo" href="/">
+
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="30%"><defs><style>.cls-1{fill:#fff;}.cls-2{fill:#f90;fill-rule:evenodd;}</style></defs><title>AWS-Logo_White-Color</title><path class="cls-1" d="M14.09,10.85a4.7,4.7,0,0,0,.19,1.48,7.73,7.73,0,0,0,.54,1.19.77.77,0,0,1,.12.38.64.64,0,0,1-.32.49l-1,.7a.83.83,0,0,1-.44.15.69.69,0,0,1-.49-.23,3.8,3.8,0,0,1-.6-.77q-.25-.42-.51-1a6.14,6.14,0,0,1-4.89,2.3,4.54,4.54,0,0,1-3.32-1.19,4.27,4.27,0,0,1-1.22-3.2A4.28,4.28,0,0,1,3.61,7.75,6.06,6.06,0,0,1,7.69,6.46a12.47,12.47,0,0,1,1.76.13q.92.13,1.91.36V5.73a3.65,3.65,0,0,0-.79-2.66A3.81,3.81,0,0,0,7.86,2.3a7.71,7.71,0,0,0-1.79.22,12.78,12.78,0,0,0-1.79.57,4.55,4.55,0,0,1-.58.22l-.26,0q-.35,0-.35-.52V2a1.09,1.09,0,0,1,.12-.58,1.2,1.2,0,0,1,.47-.35A10.88,10.88,0,0,1,5.77.32,10.19,10.19,0,0,1,8.36,0a6,6,0,0,1,4.35,1.35,5.49,5.49,0,0,1,1.38,4.09ZM7.34,13.38a5.36,5.36,0,0,0,1.72-.31A3.63,3.63,0,0,0,10.63,12,2.62,2.62,0,0,0,11.19,11a5.63,5.63,0,0,0,.16-1.44v-.7a14.35,14.35,0,0,0-1.53-.28,12.37,12.37,0,0,0-1.56-.1,3.84,3.84,0,0,0-2.47.67A2.34,2.34,0,0,0,5,11a2.35,2.35,0,0,0,.61,1.76A2.4,2.4,0,0,0,7.34,13.38Zm13.35,1.8a1,1,0,0,1-.64-.16,1.3,1.3,0,0,1-.35-.65L15.81,1.51a3,3,0,0,1-.15-.67.36.36,0,0,1,.41-.41H17.7a1,1,0,0,1,.65.16,1.4,1.4,0,0,1,.33.65l2.79,11,2.59-11A1.17,1.17,0,0,1,24.39.6a1.1,1.1,0,0,1,.67-.16H26.4a1.1,1.1,0,0,1,.67.16,1.17,1.17,0,0,1,.32.65L30,12.39,32.88,1.25A1.39,1.39,0,0,1,33.22.6a1,1,0,0,1,.65-.16h1.54a.36.36,0,0,1,.41.41,1.36,1.36,0,0,1,0,.26,3.64,3.64,0,0,1-.12.41l-4,12.86a1.3,1.3,0,0,1-.35.65,1,1,0,0,1-.64.16H29.25a1,1,0,0,1-.67-.17,1.26,1.26,0,0,1-.32-.67L25.67,3.64,23.11,14.34a1.26,1.26,0,0,1-.32.67,1,1,0,0,1-.67.17Zm21.36.44a11.28,11.28,0,0,1-2.56-.29,7.44,7.44,0,0,1-1.92-.67,1,1,0,0,1-.61-.93v-.84q0-.52.38-.52a.9.9,0,0,1,.31.06l.42.17a8.77,8.77,0,0,0,1.83.58,9.78,9.78,0,0,0,2,.2,4.48,4.48,0,0,0,2.43-.55,1.76,1.76,0,0,0,.86-1.57,1.61,1.61,0,0,0-.45-1.16A4.29,4.29,0,0,0,43,9.22l-2.41-.76A5.15,5.15,0,0,1,38,6.78a3.94,3.94,0,0,1-.83-2.41,3.7,3.7,0,0,1,.45-1.85,4.47,4.47,0,0,1,1.19-1.37A5.27,5.27,0,0,1,40.51.29,7.4,7.4,0,0,1,42.6,0a8.87,8.87,0,0,1,1.12.07q.57.07,1.08.19t.95.26a4.27,4.27,0,0,1,.7.29,1.59,1.59,0,0,1,.49.41.94.94,0,0,1,.15.55v.79q0,.52-.38.52a1.76,1.76,0,0,1-.64-.2,7.74,7.74,0,0,0-3.2-.64,4.37,4.37,0,0,0-2.21.47,1.6,1.6,0,0,0-.79,1.48,1.58,1.58,0,0,0,.49,1.18,4.94,4.94,0,0,0,1.83.92L44.55,7a5.08,5.08,0,0,1,2.57,1.6A3.76,3.76,0,0,1,47.9,11a4.21,4.21,0,0,1-.44,1.93,4.4,4.4,0,0,1-1.21,1.47,5.43,5.43,0,0,1-1.85.93A8.25,8.25,0,0,1,42.05,15.62Z"></path><path class="cls-2" d="M45.19,23.81C39.72,27.85,31.78,30,25,30A36.64,36.64,0,0,1,.22,20.57c-.51-.46-.06-1.09.56-.74A49.78,49.78,0,0,0,25.53,26.4,49.23,49.23,0,0,0,44.4,22.53C45.32,22.14,46.1,23.14,45.19,23.81Z"></path><path class="cls-2" d="M47.47,21.21c-.7-.9-4.63-.42-6.39-.21-.53.06-.62-.4-.14-.74,3.13-2.2,8.27-1.57,8.86-.83s-.16,5.89-3.09,8.35c-.45.38-.88.18-.68-.32C46.69,25.8,48.17,22.11,47.47,21.21Z"></path></svg>
+
+</a>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="Search...">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/js/lunr.min.js?1739967814"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1739967814"></script>
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/localhost:1313\/";
+    
+</script>
+<script type="text/javascript" src="/js/search.js?1739967814"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-introduction/" title="Introduction" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/1-introduction/">
+          <b>1. </b>Introduction
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-introduction/1-local-system-setup/" title="Local System Setup" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/1-introduction/1-local-system-setup/">
+          <b>1.1. </b>Local System Setup
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-introduction/2-aws-account-setup/" title="AWS Account and IAM User" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/1-introduction/2-aws-account-setup/">
+          <b>1.2. </b>AWS Account and IAM User
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-clickstream-anomaly-detection-with-flink/" title="Lab: Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/2-clickstream-anomaly-detection-with-flink/">
+          <b>2. </b>Lab: Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-clickstream-anomaly-detection-with-flink/1-prelab-setup/" title="Prelab Setup" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/2-clickstream-anomaly-detection-with-flink/1-prelab-setup/">
+          <b>2.1. </b>Prelab Setup
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-clickstream-anomaly-detection-with-flink/2-real-time-clickstream-anomaly-detection/" title="Lab: Real Time Clickstream Anomaly Detection" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/2-clickstream-anomaly-detection-with-flink/2-real-time-clickstream-anomaly-detection/">
+          <b>2.2. </b>Lab: Real Time Clickstream Anomaly Detection
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-clickstream-anomaly-detection-with-flink/3-streaming-etl-with-aws-glue/" title="Lab: Streaming ETL With Aws Glue" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/2-clickstream-anomaly-detection-with-flink/3-streaming-etl-with-aws-glue/">
+          <b>2.3. </b>Lab: Streaming ETL With Aws Glue
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/3-ingestion-with-dms/" title="Ingestion With DMS: Skip DMS Lab" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/3-ingestion-with-dms/">
+          <b>3. </b>Ingestion With DMS: Skip DMS Lab
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/4-transforming-glue/" title="Transforming data with Glue" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/4-transforming-glue/">
+          <b>4. </b>Transforming data with Glue
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/4-transforming-glue/1-etl/" title="Data Validation and ETL (1)" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/4-transforming-glue/1-etl/">
+          <b>4.1 </b>Data Validation and ETL (1)
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/4-transforming-glue/2-etl-2/" title="Data Validation and ETL (2)" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/4-transforming-glue/2-etl-2/">
+          <b>4.2. </b>Data Validation and ETL (2)
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/5-query-and-visualize/" title="Athena and Quicksight" class="dd-item 
+        
+        active
+        
+        ">
+      <a href="/5-query-and-visualize/">
+          <b>5. </b>Athena and Quicksight
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+
+    
+    <section id="prefooter">
+      <hr/>
+      <ul>
+      
+        <li>
+          <a class="padding">
+            <i class="fas fa-language fa-fw"></i>
+          <div class="select-style">
+            <select id="select-language" onchange="location = this.value;">
+          
+          
+          
+              
+              
+                  
+                    
+                    
+                      <option id="en" value="/5-query-and-visualize/" selected>English</option>
+                    
+                  
+              
+                  
+              
+          
+              
+              
+                  
+              
+                  
+                    
+                    
+                      <option id="vi" value="/vi/5-query-and-visualize/">Tiếng Việt</option>
+                    
+                  
+              
+          
+        </select>
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+          <g>
+            <g id="arrow-drop-down">
+              <polygon points="0,63.75 127.5,191.25 255,63.75 		" />
+            </g>
+          </g>
+        </svg>
+        </div>
+        </a>
+        </li>
+      
+      
+      
+        <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Clear History</a></li>
+      
+      </ul>
+    </section>
+    
+    <section id="footer">
+      <left>
+    
+     <b> Workshop</b> <br>
+    <img src="https://hitwebcounter.com/counter/counter.php?page=7830891&style=0038&nbdigits=9&type=page&initCount=0" title="Migrate" Alt="web counter"   border="0" /></a>  <br>
+     <b> <a href="https://cloudjourney.awsstudygroup.com/">Cloud Journey</a></b> <br>
+    <img src="https://hitwebcounter.com/counter/counter.php?page=7830807&style=0038&nbdigits=9&type=page&initCount=0" title="Total CLoud Journey" Alt="web counter"   border="0"   />
+     
+</left>
+<left>
+    <br>
+    <br>
+        <b> Last Updated </b> <br>
+        <i><font color=orange>19-02-2025</font></i>
+    </left>
+    <left>
+        <br>
+        <br>
+            <b> Team </b> <br>
+           
+            <i>
+                <a href="https://www.linkedin.com/in/jotaguy"  style="color:orange">Thùy Dung</a>
+        </i>
+        </left>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            <a href='/'>ETL & Data Lake Immersion</a> > Athena and Quicksight
+          
+        
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#-query-data-with-amazon-athena">🔍 Query Data with Amazon Athena</a></li>
+        <li><a href="#create-quicksight-charts">Create QuickSight Charts</a></li>
+        <li><a href="#create-quicksight-parameters">Create QuickSight Parameters</a></li>
+        <li><a href="#create-a-quicksight-filter">Create a QuickSight Filter</a></li>
+        <li><a href="#add-calculated-fields">Add Calculated Fields</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              Athena and Quicksight
+            </h1>
+          
+
+        
+
+
+
+	<h3 id="-query-data-with-amazon-athena">🔍 Query Data with Amazon Athena</h3>
+<h4 id="step-1-open-amazon-athena">Step 1: Open Amazon Athena</h4>
+<ol>
+<li>In the <strong>AWS Services Console</strong>, search for <strong>Athena</strong>.</li>
+<li>If this is your first time using <strong>Athena</strong> in your AWS Account, expand <strong>&ldquo;Get Started using Athena&rdquo;</strong> and follow the setup instructions.</li>
+</ol>
+<hr>
+<h4 id="step-2-select-database-and-inspect-tables">Step 2: Select Database and Inspect Tables</h4>
+<ol>
+<li>In the <strong>Query Editor</strong>, select your newly created database (e.g., <code>&quot;ticketdata&quot;</code>).</li>
+<li>Click on the table <strong>&ldquo;parquet_sporting_event_ticket&rdquo;</strong> to inspect its fields.
+<ul>
+<li>The data types for <strong>id</strong>, <strong>sporting_event_id</strong>, and <strong>ticketholder_id</strong> should be <strong>(double)</strong>.</li>
+</ul>
+</li>
+</ol>
+<p><img src="/5-athena-and-quicksight/1-athena/1.png?width=10pc" alt="1"></p>
+<hr>
+<h4 id="step-3-query-across-multiple-tables">Step 3: Query Across Multiple Tables</h4>
+<p>Next, we will query across the tables:</p>
+<ul>
+<li><code>parquet_sporting_event</code></li>
+<li><code>parquet_sport_team</code></li>
+<li><code>parquet_sport_location</code></li>
+</ul>
+<p>📌 <strong>Copy and run the following SQL query in the Athena Query Editor:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    e.id <span style="color:#66d9ef">AS</span> event_id,
+</span></span><span style="display:flex;"><span>    e.sport_type_name <span style="color:#66d9ef">AS</span> sport,
+</span></span><span style="display:flex;"><span>    e.start_date_time <span style="color:#66d9ef">AS</span> event_date_time,
+</span></span><span style="display:flex;"><span>    h.name <span style="color:#66d9ef">AS</span> home_team,
+</span></span><span style="display:flex;"><span>    a.name <span style="color:#66d9ef">AS</span> away_team,
+</span></span><span style="display:flex;"><span>    l.name <span style="color:#66d9ef">AS</span> <span style="color:#66d9ef">location</span>,
+</span></span><span style="display:flex;"><span>    l.city
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> parquet_sporting_event e,
+</span></span><span style="display:flex;"><span>     parquet_sport_team h,
+</span></span><span style="display:flex;"><span>     parquet_sport_team a,
+</span></span><span style="display:flex;"><span>     parquet_sport_location l
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span>
+</span></span><span style="display:flex;"><span>    e.home_team_id <span style="color:#f92672">=</span> h.id
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">AND</span> e.away_team_id <span style="color:#f92672">=</span> a.id
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">AND</span> e.location_id <span style="color:#f92672">=</span> l.id;
+</span></span></code></pre></div><p><img src="/5-athena-and-quicksight/1-athena/2.png?width=90pc" alt="2">
+<img src="/5-athena-and-quicksight/1-athena/3.png?width=90pc" alt="3"></p>
+<h4 id="step-4-create-a-view">Step 4: Create a View</h4>
+<ol>
+<li>Click <strong>Create</strong> and then select <strong>View from query</strong>.</li>
+<li>Name the view <strong>sporting_event_info</strong> and click <strong>Create</strong>.</li>
+</ol>
+<p><img src="/5-athena-and-quicksight/1-athena/4.png?width=30pc" alt="4"></p>
+<ol start="3">
+<li>Your new view is now created.</li>
+</ol>
+<p><img src="/5-athena-and-quicksight/1-athena/5.png?width=30pc" alt="5"></p>
+<h4 id="step-5-query-the-view">Step 5: Query the View</h4>
+<ol>
+<li>Open a new query tab in <strong>Athena</strong>.</li>
+<li>Copy and paste the following SQL query:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> 
+</span></span><span style="display:flex;"><span>    t.id <span style="color:#66d9ef">AS</span> ticket_id,
+</span></span><span style="display:flex;"><span>    e.event_id,
+</span></span><span style="display:flex;"><span>    e.sport,
+</span></span><span style="display:flex;"><span>    e.event_date_time,
+</span></span><span style="display:flex;"><span>    e.home_team,
+</span></span><span style="display:flex;"><span>    e.away_team,
+</span></span><span style="display:flex;"><span>    e.<span style="color:#66d9ef">location</span>,
+</span></span><span style="display:flex;"><span>    e.city,
+</span></span><span style="display:flex;"><span>    t.seat_level,
+</span></span><span style="display:flex;"><span>    t.seat_section,
+</span></span><span style="display:flex;"><span>    t.seat_row,
+</span></span><span style="display:flex;"><span>    t.seat,
+</span></span><span style="display:flex;"><span>    t.ticket_price,
+</span></span><span style="display:flex;"><span>    p.full_name <span style="color:#66d9ef">AS</span> ticketholder
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> sporting_event_info e,
+</span></span><span style="display:flex;"><span>     parquet_sporting_event_ticket t,
+</span></span><span style="display:flex;"><span>     parquet_person p
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span>
+</span></span><span style="display:flex;"><span>    t.sporting_event_id <span style="color:#f92672">=</span> e.event_id
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">AND</span> t.ticketholder_id <span style="color:#f92672">=</span> p.id;
+</span></span></code></pre></div><p><img src="/5-athena-and-quicksight/1-athena/6.png?width=30pc" alt="6"></p>
+<h4 id="step-7-save-the-query">Step 7: Save the Query</h4>
+<ol>
+<li>Click on <strong>Save as</strong>.</li>
+<li>Give this query a name: <strong>create_view_sporting_event_ticket_info</strong> and some description.</li>
+<li>Click on <strong>Save query</strong>.</li>
+</ol>
+<p><img src="/5-athena-and-quicksight/1-athena/7.png?width=30pc" alt="7"></p>
+<ol start="4">
+<li>Back to the query editor, you will see the query name changed.</li>
+</ol>
+<p><img src="/5-athena-and-quicksight/1-athena/8.png?width=30pc" alt="8"></p>
+<ol start="5">
+<li>Now, click on <strong>Run</strong>.</li>
+<li>The results appear beneath the query window.</li>
+</ol>
+<p><img src="/5-athena-and-quicksight/1-athena/9.png?width=90pc" alt="9">
+<img src="/5-athena-and-quicksight/1-athena/10.png?width=90pc" alt="10"></p>
+<h4 id="step-8-create-another-view">Step 8: Create Another View</h4>
+<ol>
+<li>Click <strong>View from query</strong>.</li>
+<li>Name the view <strong>sporting_event_ticket_info</strong>.</li>
+<li>Click <strong>Create</strong>.</li>
+</ol>
+<p><img src="/5-athena-and-quicksight/1-athena/11.png?width=20pc" alt="11"></p>
+<h4 id="step-9-copy-and-run-the-query">Step 9: Copy and Run the Query</h4>
+<ol>
+<li>Copy the following SQL syntax into the <strong>Query 5</strong> tab:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>    sport,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">count</span>(<span style="color:#66d9ef">distinct</span> <span style="color:#66d9ef">location</span>) <span style="color:#66d9ef">as</span> locations,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">count</span>(<span style="color:#66d9ef">distinct</span> event_id) <span style="color:#66d9ef">as</span> events,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">count</span>(<span style="color:#f92672">*</span>) <span style="color:#66d9ef">as</span> tickets,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">avg</span>(ticket_price) <span style="color:#66d9ef">as</span> avg_ticket_price
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> sporting_event_ticket_info
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> <span style="color:#ae81ff">1</span>;
+</span></span></code></pre></div><ul>
+<li>Click on Save as and give this query name: analytics_sporting_event_ticket_info and some description and then, click on Save.</li>
+</ul>
+<p><img src="/5-athena-and-quicksight/1-athena/12.png?width=20pc" alt="12"></p>
+<ul>
+<li>The result of queries</li>
+</ul>
+<p><img src="/5-athena-and-quicksight/1-athena/13.png?width=90pc" alt="13"></p>
+<h3 id="create-quicksight-charts">Create QuickSight Charts</h3>
+<p>This section guides you through different chart types in QuickSight.</p>
+<h4 id="step-1-populate-the-chart">Step 1: Populate the Chart</h4>
+<ol>
+<li>In the <strong>Fields list</strong>, click the <code>ticket_price</code> column to populate the chart.</li>
+<li>Click the <strong>expand icon</strong> in the corner of <code>ticket_price</code> field.</li>
+<li>Select <strong>Show as Currency</strong> to display the number in <strong>dollar value</strong>.</li>
+</ol>
+<p><img src="/5-athena-and-quicksight/1-athena/14.png?width=90pc" alt="14"></p>
+<h4 id="step-2-add-a-visual">Step 2: Add a Visual</h4>
+<ol>
+<li>Click the <strong>Add</strong> button from the <strong>Visuals pane</strong>.</li>
+<li>In the <strong>Visual types</strong> area, choose the <strong>Vertical bar chart</strong> icon.</li>
+<li>Set the <strong>X-axis</strong>:
+<ul>
+<li>In the <strong>Fields list</strong>, select <code>event_date_time</code>.</li>
+<li>The visualization should update automatically.</li>
+</ul>
+</li>
+<li>Set the <strong>Y-axis (Value)</strong>:
+<ul>
+<li>Select <code>ticket_price</code> from the <strong>Fields list</strong>.</li>
+</ul>
+</li>
+</ol>
+<p><img src="/5-athena-and-quicksight/1-athena/15.png?width=90pc" alt="15"></p>
+<h4 id="step-3-adjust-and-group-data">Step 3: Adjust and Group Data</h4>
+<ol>
+<li>Drag and move visuals to adjust space in the <strong>dashboard</strong>.</li>
+<li>In the <strong>Fields list</strong>, click and drag <code>seat_level</code> to the <strong>Group/Color</strong> box.</li>
+<li>Use the <strong>slider below the X-axis</strong> to fit all the data.</li>
+</ol>
+<p><img src="/5-athena-and-quicksight/1-athena/16.png?width=90pc" alt="16"></p>
+<h4 id="step-4-change-the-chart-type">Step 4: Change the Chart Type</h4>
+<ol>
+<li>In the <strong>Visuals pane</strong>, click <strong>Vertical bar chart</strong>.</li>
+<li>Under <strong>Change visual type</strong>, choose the <strong>Clustered bar combo chart</strong> icon.</li>
+<li>In the <strong>Fields list</strong>, click and drag <code>ticketholder</code> to the <strong>Lines</strong> box.</li>
+<li>In the <strong>Lines</strong> box:
+<ul>
+<li>Click the <strong>dropdown box</strong>.</li>
+<li>Choose <strong>Aggregate: Count Distinct</strong> for Aggregate.</li>
+<li>The <strong>Y-axis</strong> should update on the right-hand side.</li>
+</ul>
+</li>
+</ol>
+<p><img src="/5-athena-and-quicksight/1-athena/17.png?width=90pc" alt="17"></p>
+<h4 id="step-5-explore-insight">Step 5: Explore Insight</h4>
+<p><img src="/5-athena-and-quicksight/1-athena/18.png?width=90pc" alt="18"></p>
+<h3 id="create-quicksight-parameters">Create QuickSight Parameters</h3>
+<p>In this section, we will create parameters with controls for the dashboard and assign them to a filter for all visuals.</p>
+<h4 id="step-1-open-parameters">Step 1: Open Parameters</h4>
+<ol>
+<li>From the <strong>Toolbar</strong>, select the <strong>Parameters</strong> icon.</li>
+</ol>
+<p><img src="/5-athena-and-quicksight/1-athena/19.png?width=30pc" alt="19"></p>
+<h4 id="step-2-create-the-eventfrom-parameter">Step 2: Create the <code>EventFrom</code> Parameter</h4>
+<ol>
+<li>Click <strong>Add</strong> to create a new parameter.</li>
+<li>For <strong>Name</strong>, type <strong>EventFrom</strong>.</li>
+<li>For <strong>Data type</strong>, choose <strong>Datetime</strong>.</li>
+<li>For <strong>Time granularity</strong>, set <strong>Hour</strong>.</li>
+<li>For <strong>Default value</strong>, select a date from the calendar corresponding to the <strong>earliest event_date_time</strong> in your graph.
+<ul>
+<li>Example: <code>2021-01-01 00:00</code>.</li>
+</ul>
+</li>
+<li>Click <strong>Create</strong>, then close the <strong>Parameter Added</strong> dialog box.</li>
+</ol>
+<p><img src="/5-athena-and-quicksight/1-athena/20.png?width=30pc" alt="20"></p>
+<h4 id="step-3-create-the-eventto-parameter">Step 3: Create the <code>EventTo</code> Parameter</h4>
+<ol>
+<li>Click <strong>Add</strong> to create another parameter.</li>
+<li>Set the following attributes:
+<ul>
+<li><strong>Name</strong>: <code>EventTo</code></li>
+<li><strong>Data type</strong>: <code>Datetime</code></li>
+<li><strong>Time granularity</strong>: <code>Hour</code></li>
+<li><strong>Default value</strong>: Select a date from the calendar corresponding to the <strong>latest event_date_time</strong> in your graph.
+<ul>
+<li>Example: <code>2022-01-01 00:00</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Click <strong>Create</strong>.</li>
+</ol>
+<p><img src="/5-athena-and-quicksight/1-athena/21.png?width=30pc" alt="21"></p>
+<h4 id="step-4-add-controls">Step 4: Add Controls</h4>
+<ol>
+<li>In the next window, you can select any option to perform operations with the parameter.</li>
+<li>Alternatively, click the <strong>three dots</strong> for the <strong>EventFrom</strong> parameter and choose <strong>Add control</strong>.</li>
+<li>For <strong>Display name</strong>, specify <strong>Event From</strong> and click <strong>Add</strong>.</li>
+</ol>
+<p><img src="/5-athena-and-quicksight/1-athena/22.png?width=30pc" alt="22">
+<img src="/5-athena-and-quicksight/1-athena/23.png?width=30pc" alt="23"></p>
+<ol start="4">
+<li>Repeat the process to <strong>add a control</strong> for <code>EventTo</code>, setting the <strong>Display name</strong> as <strong>Event To</strong>.</li>
+</ol>
+<p><img src="/5-athena-and-quicksight/1-athena/24.png?width=30pc" alt="24"></p>
+<p>Now, you should see and expand the <strong>Controls</strong> section above the chart.</p>
+<p><img src="/5-athena-and-quicksight/1-athena/25.png?width=90pc" alt="25"></p>
+<h3 id="create-a-quicksight-filter">Create a QuickSight Filter</h3>
+<p>To finalize the process, we will connect a filter to the controls for all visuals.</p>
+<ol>
+<li>From the <strong>Toolbar</strong>, choose <strong>Filter</strong>.</li>
+<li>Click the <strong>plus icon (+)</strong> to add a filter for the field <strong>event_date_time</strong>.</li>
+</ol>
+<p><img src="/5-athena-and-quicksight/1-athena/26.png?width=30pc" alt="26"></p>
+<ol start="3">
+<li>Click the newly added filter to edit its properties.</li>
+</ol>
+<p><img src="/5-athena-and-quicksight/1-athena/27.png?width=30pc" alt="26"></p>
+<ol start="4">
+<li>Set <strong>Applied To</strong> dropdown to <strong>All applicable visuals</strong>.  \</li>
+<li>For <strong>Filter type</strong>, choose <strong>Date &amp; Time range</strong>.</li>
+<li>Set <strong>Condition</strong> as <strong>Between</strong>.</li>
+<li>Select <strong>Use Parameter</strong>, click <strong>Yes</strong> to apply to all visuals.</li>
+<li>Set <strong>Start date parameter</strong> to <strong>EventFrom</strong>.</li>
+<li>Set <strong>End date parameter</strong> to <strong>EventTo</strong>.</li>
+</ol>
+<p><img src="/5-athena-and-quicksight/1-athena/28.png?width=20pc" alt="28"></p>
+<ol start="11">
+<li>Click <strong>Apply</strong>.</li>
+</ol>
+<hr>
+<h3 id="add-calculated-fields">Add Calculated Fields</h3>
+<p>Now, let&rsquo;s add calculated fields for <strong>day of the week</strong> and <strong>hour of the day</strong>, then visualize them using a <strong>scatter plot</strong>.</p>
+<ol>
+<li>Click the <strong>Data</strong> menu and select <strong>Add Calculated Field</strong>.</li>
+</ol>
+<p><img src="/5-athena-and-quicksight/1-athena/29.png?width=20pc" alt="29"></p>
+<ol start="2">
+<li>Name the field: <code>event_day_of_week</code>.</li>
+<li>Enter the formula:  extract(&lsquo;WD&rsquo;, {event_date_time})</li>
+<li>Click Save</li>
+</ol>
+<p><img src="/5-athena-and-quicksight/1-athena/31.png?width=90pc" alt="31"></p>
+<ol start="5">
+<li>Add another calculated field with the following attributes:</li>
+</ol>
+<ul>
+<li>Calculated field name: event_hour_of_day</li>
+<li>Formula: extract(&lsquo;HH&rsquo;,{event_date_time})</li>
+</ul>
+<ol start="6">
+<li>Click Visualize icon from the Tool bar and choose Add visual.</li>
+</ol>
+<p><img src="/5-athena-and-quicksight/1-athena/32.png?width=30pc" alt="32"></p>
+<ol start="7">
+<li>
+<p>For field type, select the scatter plot.</p>
+</li>
+<li>
+<p>In the Fields list, click the following attributes to set the graph attributes:</p>
+<ul>
+<li><strong>X-axis: &ldquo;event_hour_of_day&rdquo;</strong></li>
+<li><strong>Y-axis: &ldquo;event_day_of_week&rdquo;</strong></li>
+<li><strong>Size: &ldquo;ticket_price&rdquo;</strong></li>
+</ul>
+</li>
+</ol>
+<p><img src="/5-athena-and-quicksight/1-athena/33.png?width=90pc" alt="33"></p>
+<p>You can now click on Publish on the top right corner of screen to publish your visuals. You can also, share it by clicking on the Share menu.</p>
+<p><img src="/5-athena-and-quicksight/1-athena/34.png?width=90pc" alt="34"></p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/4-transforming-glue/2-etl-2/" title="Data Validation and ETL (2)"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/1-introduction/" title="Introduction" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1739967814"></script>
+    <script src="/js/perfect-scrollbar.min.js?1739967814"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1739967814"></script>
+    <script src="/js/jquery.sticky.js?1739967814"></script>
+    <script src="/js/featherlight.min.js?1739967814"></script>
+    <script src="/js/highlight.pack.js?1739967814"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom-3.6.0.js?1739967814"></script>
+    <script src="/js/learn.js?1739967814"></script>
+    <script src="/js/hugo-learn.js?1739967814"></script>
+
+    <link href="/mermaid/mermaid.css?1739967814" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1739967814"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-158079754-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  </body>
+</html>
